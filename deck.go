@@ -18,17 +18,22 @@ type Deck struct {
 	cards []Card
 }
 
-func NewDeck() *Deck {
+func NewDeck() (*Deck, error) {
 	deck := &Deck{}
+	var err error
+
 	for i := 0; i < MaxRetries; i++ {
-		err := deck.Shuffle()
-		if err != nil {
-			fmt.Printf("failed to shuffle deck. Error: %s\n", err)
-		} else {
+		err = deck.Shuffle()
+		if err == nil {
 			break
 		}
 	}
-	return deck
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to shuffle deck. Error: %w", err)
+	}
+
+	return deck, nil
 }
 
 func (deck *Deck) Shuffle() error {
