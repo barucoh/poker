@@ -40,12 +40,12 @@ func (deck *Deck) Shuffle() error {
 	deck.cards = make([]Card, len(fullDeck.cards))
 	copy(deck.cards, fullDeck.cards)
 
-	for i := len(deck.cards) - 1; i > 0; i-- {
-		j, err := random.Intn(i)
-		if err != nil {
-			return fmt.Errorf("error in deck generation: %w", err)
-		}
+	err := random.Shuffle(len(deck.cards), func(i, j int) {
 		deck.cards[i], deck.cards[j] = deck.cards[j], deck.cards[i]
+	})
+
+	if err != nil {
+		return fmt.Errorf("error in deck generation: %w", err)
 	}
 
 	return nil

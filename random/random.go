@@ -26,3 +26,21 @@ func Intn(max int) (int, error) {
 	}
 	return int(randomIndex.Int64()), nil
 }
+
+func Shuffle(n int, swap func(i, j int)) error {
+	for i := n - 1; i > 0; i-- {
+		randomI, err := Intn(n)
+		if err != nil {
+			return fmt.Errorf("failed to shuffle, error: %w", err)
+		}
+
+		randomJ, err := Intn(n)
+		if err != nil {
+			return fmt.Errorf("failed to shuffle, error: %w", err)
+		}
+
+		swap(randomI, randomJ)
+	}
+
+	return nil
+}
